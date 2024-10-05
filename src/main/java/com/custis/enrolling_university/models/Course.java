@@ -2,6 +2,8 @@ package com.custis.enrolling_university.models;
 
 import jakarta.persistence.*;
 
+import java.time.ZonedDateTime;
+
 @Entity
 @Table(name = "courses")
 public class Course {
@@ -19,6 +21,12 @@ public class Course {
 
     @Column(name = "total_seats")
     private int totalSeats;
+
+    @Column(name = "start_date")
+    private ZonedDateTime startDate;
+
+    @Column(name = "end_date")
+    private ZonedDateTime endDate;
 
     public Course() {
     }
@@ -54,4 +62,12 @@ public class Course {
     public void setTotalSeats(int totalSeats) {
         this.totalSeats = totalSeats;
     }
+
+    public ZonedDateTime getStartDate() { return startDate; }
+
+    public void setStartDate(ZonedDateTime startDate) { this.startDate = startDate; }
+
+    public ZonedDateTime getEndDate() { return endDate; }
+
+    public void setEndDate(ZonedDateTime endDate) { this.endDate = endDate; }
 }

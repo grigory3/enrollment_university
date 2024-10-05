@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.ZonedDateTime;
 import java.util.List;
 
 @Service
@@ -38,6 +39,12 @@ public class EnrollmentService {
 
         if (course.getOccupiedSeats() >= course.getTotalSeats()) {
             return "Нет свободных мест";
+        }
+
+        ZonedDateTime now = ZonedDateTime.now();
+
+        if(now.isBefore(course.getStartDate()) || now.isAfter(course.getEndDate())) {
+        return "Окно для записи закрыто";
         }
 
         Student student = studentRepository.findById(studentId).orElseThrow(() -> new RuntimeException("Студент не найден"));
