@@ -12,6 +12,8 @@ import org.springframework.stereotype.Service;
 
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+
 @Service
 public class EnrollmentService {
 
@@ -23,6 +25,10 @@ public class EnrollmentService {
 
     @Autowired
     private EnrollmentRepository enrollmentRepository;
+
+    public List<Course> getAllCourses() {
+        return courseRepository.findAll();
+    }
 
     @Transactional
     public String enrollStudent(Long studentId, Long courseId) {
