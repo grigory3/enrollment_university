@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import org.springframework.stereotype.Service;
 
+import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
@@ -30,7 +31,7 @@ public class EnrollmentService {
         return courseRepository.findAll();
     }
 
-    @Transactional
+    @Transactional(isolation = Isolation.SERIALIZABLE)
     public String enrollStudent(Long studentId, Long courseId) {
 
         Course course = courseRepository.findById(courseId).orElseThrow(() -> new RuntimeException("Курс не найден"));
