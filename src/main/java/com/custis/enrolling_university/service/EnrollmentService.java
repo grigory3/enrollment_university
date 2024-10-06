@@ -1,5 +1,9 @@
 package com.custis.enrolling_university.service;
 
+import com.custis.enrolling_university.customExceptions.NoFreePlacesException;
+import com.custis.enrolling_university.customExceptions.RecordingTimeExpiredException;
+import com.custis.enrolling_university.customExceptions.StudentNotFoundException;
+import com.custis.enrolling_university.customExceptions.CourseNotFoundException;
 import com.custis.enrolling_university.models.Course;
 import com.custis.enrolling_university.models.Enrollment;
 import com.custis.enrolling_university.models.Student;
@@ -33,21 +37,18 @@ public class EnrollmentService {
     }
 
     @Transactional(isolation = Isolation.SERIALIZABLE)
-    public String enrollStudent(Long studentId, Long courseId) {
+    public void enrollStudent(Long studentId, Long courseId) {
 
-        Course course = courseRepository.findById(courseId).orElseThrow(() -> new RuntimeException("Курс не найден"));
+        Course course = courseRepository.findById(courseId).orElseThrow(CourseNotFoundException::new);
 
-        if (course.getOccupiedSeats() >= course.getTotalSeats()) {
-            return "Нет свободных мест";
-        }
+        if (course.getOccupiedSeats() >= course.getTotalSeats()) throw new NoFreePlacesException();
 
         ZonedDateTime now = ZonedDateTime.now();
 
-        if(now.isBefore(course.getStartDate()) || now.isAfter(course.getEndDate())) {
-        return "Окно для записи закрыто";
-        }
+        if (now.isBefore(course.getStartDate()) || now.isAfter(course.getEndDate()))
+            throw new RecordingTimeExpiredException();
 
-        Student student = studentRepository.findById(studentId).orElseThrow(() -> new RuntimeException("Студент не найден"));
+        Student student = studentRepository.findById(studentId).orElseThrow(StudentNotFoundException::new);
 
         Enrollment enrollment = new Enrollment();
 
@@ -59,6 +60,5 @@ public class EnrollmentService {
 
         courseRepository.save(course);
 
-        return "Успешно зачислен!";
     }
 }
