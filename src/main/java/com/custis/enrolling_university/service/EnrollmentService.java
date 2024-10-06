@@ -10,6 +10,7 @@ import com.custis.enrolling_university.models.Student;
 import com.custis.enrolling_university.repositories.CourseRepository;
 import com.custis.enrolling_university.repositories.EnrollmentRepository;
 import com.custis.enrolling_university.repositories.StudentRepository;
+import jakarta.persistence.Tuple;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import org.springframework.stereotype.Service;
@@ -34,6 +35,10 @@ public class EnrollmentService {
 
     public List<Course> getAllCourses() {
         return courseRepository.findAll();
+    }
+
+    public List<Enrollment> getAllInfo() {
+        return enrollmentRepository.findAll();
     }
 
     @Transactional(isolation = Isolation.SERIALIZABLE)

@@ -6,6 +6,7 @@ import com.custis.enrolling_university.customExceptions.RecordingTimeExpiredExce
 import com.custis.enrolling_university.customExceptions.StudentNotFoundException;
 import com.custis.enrolling_university.models.Course;
 
+import com.custis.enrolling_university.models.Enrollment;
 import com.custis.enrolling_university.service.EnrollmentService;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -68,5 +69,9 @@ public class EnrollmentController {
         return enrollmentService.getAllCourses();
     }
 
-}
+    @GetMapping("/info")
+    public List<Enrollment> getAllInfo() {
+        return enrollmentService.getAllInfo();
+    }
 
+}
